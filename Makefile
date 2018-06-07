@@ -43,6 +43,7 @@ assets.go: dist/main.js
 	cp node_modules/typescript/lib/*d.ts dist/
 	cp deno.d.ts dist/
 	go-bindata -pkg deno -o assets.go dist/
+	sed -i '' 's/ioutil.ReadFile/Asset/g'  asset_loader.go 
 
 msg.pb.go: msg.proto
 	protoc --go_out=. msg.proto
@@ -78,5 +79,8 @@ fmt: node_modules
 
 test: deno
 	go test -v
+
+dev: deno
+	rm -f assets.go
 
 .PHONY: test lint clean distclean
