@@ -5,9 +5,10 @@ package deno
 import (
 	"flag"
 	"fmt"
-	"github.com/ry/v8worker2"
 	"os"
 	"runtime/pprof"
+
+	"github.com/ry/v8worker2"
 )
 
 var flagReload = flag.Bool("reload", false, "Reload cached remote source code.")
@@ -32,12 +33,6 @@ func setPerms() {
 	Perms.FsRead = *flagAllowRead
 	Perms.FsWrite = *flagAllowWrite
 	Perms.Net = *flagAllowNet
-}
-
-func stringAsset(path string) string {
-	data, err := Asset("dist/" + path)
-	check(err)
-	return string(data)
 }
 
 func FlagsParse() []string {
@@ -89,10 +84,13 @@ func Init() {
 
 	worker = v8worker2.New(recv)
 
-	main_js = stringAsset("main.js")
-	err := worker.Load("/main.js", main_js)
+	var err error
+	main_js, err = loadAssetString("main.js")
+	check(err)
+	err = worker.Load("/main.js", main_js)
 	exitOnError(err)
-	main_map = stringAsset("main.map")
+	main_map, err = loadAssetString("main.map")
+	check(err)
 }
 
 // It's up to library users to call

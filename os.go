@@ -3,13 +3,14 @@
 package deno
 
 import (
-	"github.com/golang/protobuf/proto"
-	"github.com/spf13/afero"
 	"io/ioutil"
 	"net/url"
 	"os"
 	"path"
 	"strings"
+
+	"github.com/golang/protobuf/proto"
+	"github.com/spf13/afero"
 )
 
 const assetPrefix string = "/$asset$/"
@@ -123,7 +124,7 @@ func HandleCodeFetch(moduleSpecifier string, containingFile string) (out []byte)
 		sourceCodeBuf, err = FetchRemoteSource(moduleName, filename)
 	} else if strings.HasPrefix(moduleName, assetPrefix) {
 		f := strings.TrimPrefix(moduleName, assetPrefix)
-		sourceCodeBuf, err = Asset("dist/" + f)
+		sourceCodeBuf, err = loadAssetModule(f)
 		if err != nil {
 			logDebug("%s Asset doesn't exist. Return without error", moduleName)
 			err = nil
