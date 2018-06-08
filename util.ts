@@ -12,6 +12,10 @@ export function log(...args: any[]): void {
   }
 }
 
+export function rawlog(...args: any[]): void {
+  console.log(...args);
+}
+
 export function assert(cond: boolean, msg = "") {
   if (!cond) {
     throw Error("Assert fail. " + msg);
