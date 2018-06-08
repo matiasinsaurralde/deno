@@ -5,9 +5,10 @@ package deno
 import (
 	"flag"
 	"fmt"
-	"github.com/ry/v8worker2"
 	"os"
 	"runtime/pprof"
+
+	"github.com/ry/v8worker2"
 )
 
 var flagReload = flag.Bool("reload", false, "Reload cached remote source code.")
@@ -34,12 +35,6 @@ func setPerms() {
 	Perms.Net = *flagAllowNet
 }
 
-func stringAsset(path string) string {
-	data, err := Asset("dist/" + path)
-	check(err)
-	return string(data)
-}
-
 func FlagsParse() []string {
 	flag.Parse()
 	args := flag.Args()
@@ -60,8 +55,7 @@ func FlagsParse() []string {
 // all interaction with V8 can go through a single point.
 var worker *v8worker2.Worker
 var workerArgs []string
-var main_js string
-var main_map string
+var mainJS, mainMap string
 
 func Init() {
 	workerArgs = FlagsParse()
@@ -89,10 +83,10 @@ func Init() {
 
 	worker = v8worker2.New(recv)
 
-	main_js = stringAsset("main.js")
-	err := worker.Load("/main.js", main_js)
+	mainJS, _ = loadAssetString("main.js")
+	err := worker.Load("/main.js", mainJS)
 	exitOnError(err)
-	main_map = stringAsset("main.map")
+	mainMap, _ = loadAssetString("main.map")
 }
 
 // It's up to library users to call
@@ -110,8 +104,8 @@ func Loop() {
 		StartCwd:       cwd,
 		StartArgv:      workerArgs,
 		StartDebugFlag: *flagDebug,
-		StartMainJs:    main_js,
-		StartMainMap:   main_map,
+		StartMainJs:    mainJS,
+		StartMainMap:   mainMap,
 	})
 	DispatchLoop()
 }
