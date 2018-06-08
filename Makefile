@@ -3,6 +3,8 @@ TS_FILES = \
 	deno.ts \
 	dispatch.ts \
 	fetch.ts \
+	http.d.ts \
+	http.ts \
 	globals.ts \
 	main.ts \
 	msg.pb.d.ts \
@@ -42,6 +44,7 @@ deno: msg.pb.go $(GO_FILES)
 assets.go: dist/main.js
 	cp node_modules/typescript/lib/*d.ts dist/
 	cp deno.d.ts dist/
+	cp http.d.ts dist/
 	go-bindata -pkg deno -o assets.go dist/
 
 msg.pb.go: msg.proto
