@@ -2,7 +2,10 @@ node_modules/
 .cache/
 dist/
 deno
-assets.go
-msg.pb.go
 /msg.pb.js
 /msg.pb.d.ts
+/target
+**/*.rs.bk
+Cargo.lock
+.vscode
+*.txt

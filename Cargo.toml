@@ -1,0 +1,19 @@
+[package]
+name = "deno"
+version = "0.1.0"
+authors = ["Matias Insaurralde <matias@insaurral.de>"]
+
+[dependencies]
+lazy_static = "1.0"
+bytes = "0.4"
+v8worker2 = { path = "/Users/matias/dev/rust/rust-v8worker2" }
+prost = "0.4.0"
+prost-derive = "0.4.0"
+prost-types = "0.4.0"
+
+[build-dependencies]
+prost-build = "0.4.0"
+
+[profile.dev]
+opt-level = 0
+debug = true
