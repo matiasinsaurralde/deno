@@ -10,6 +10,9 @@ use prost::Message;
 use deno;
 use os;
 
+const MAIN_JS: &str = "/main.js";
+const DENO_MAIN_JS: &str = "/deno_main.js";
+
 pub struct Runtime {
     worker: Worker
 }
@@ -20,10 +23,10 @@ impl Runtime {
         let mut main_js = File::open(main_js_filename).expect("File not found");
         let mut main_js_contents = String::new();
         main_js.read_to_string(&mut main_js_contents).expect("I/O error");
-        self.worker.load("/main.js".to_string(), main_js_contents.clone());
+        self.worker.load(MAIN_JS, main_js_contents.clone());
 
         // Call denoMain
-        self.worker.load("/deno_main.js".to_string(), "denoMain();".to_string());
+        self.worker.load(DENO_MAIN_JS, "denoMain();".to_string());
 
         // Load main.map:
         let main_map_filename = String::from("dist/main.map");
@@ -63,26 +66,26 @@ impl Runtime {
         self.worker.send_bytes(data);
     }
 
-    fn dummy_base_msg() -> bytes::Bytes {
+    fn dummy_base_msg() -> Box<bytes::Bytes> {
         let mut _base_msg = deno::BaseMsg::default();
         let _base_msg_length = _base_msg.encoded_len();
         let mut _base_msg_buf = Vec::with_capacity(_base_msg_length);
         _base_msg.encode(&mut _base_msg_buf).unwrap();
         let data: bytes::Bytes = bytes::Bytes::from(_base_msg_buf.as_slice());
-        data
+        Box::new(data)
     }
 
-    fn prepare_msg(msg: deno::Msg) -> bytes::Bytes {
+    fn prepare_msg(msg: deno::Msg) -> Box<bytes::Bytes> {
         let _message_length = msg.encoded_len();
         let mut _buf = Vec::with_capacity(_message_length);
         msg.encode(&mut _buf).unwrap();
-        bytes::Bytes::from(_buf.as_slice())
+        Box::new(bytes::Bytes::from(_buf.as_slice()))
     }
 }
 
 pub fn new() -> Runtime {
     let r: Runtime;
-    let cb = |incoming_data: bytes::Bytes| {
+    let cb = |incoming_data: bytes::Bytes| -> Box<bytes::Bytes> {
         let _m = deno::BaseMsg::decode(incoming_data).unwrap();
         let _inner_msg = deno::Msg::decode(_m.payload).unwrap();
         let cmd = _inner_msg.command;
