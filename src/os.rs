@@ -43,7 +43,7 @@ pub fn code_fetch(msg: deno::Msg) -> deno::Msg {
     let filepath_str = filepath.to_str().unwrap();
     reply_msg.code_fetch_res_module_name = String::from(filepath_str);
     reply_msg.code_fetch_res_filename = String::from(filepath_str);
-    reply_msg.code_fetch_res_source_code = contents.clone();
+    reply_msg.code_fetch_res_source_code = contents;
     reply_msg
 }
 
