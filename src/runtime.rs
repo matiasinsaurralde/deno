@@ -2,6 +2,7 @@ extern crate v8worker2;
 use v8worker2::worker::Worker as Worker;
 
 extern crate bytes;
+
 use std::fs::File;
 use std::io::prelude::*;
 use std::env;
@@ -14,7 +15,9 @@ const MAIN_JS: &str = "/main.js";
 const DENO_MAIN_JS: &str = "/deno_main.js";
 
 pub struct Runtime {
-    worker: Worker
+    worker: Worker,
+    filename: String,
+    debug_mode: bool
 }
 
 impl Runtime {
@@ -44,8 +47,8 @@ impl Runtime {
         _message.start_cwd = cwd_str;
         _message.start_main_js = main_js_contents;
         _message.start_main_map = main_map_contents;
-        _message.start_debug_flag = true;
-        _message.start_argv.push("readfile.ts".to_string());
+        _message.start_debug_flag = self.debug_mode;
+        _message.start_argv.push(self.filename.to_owned());
         self.send_message("start".to_string(), _message);
         
     }
@@ -81,9 +84,13 @@ impl Runtime {
         msg.encode(&mut _buf).unwrap();
         Box::new(bytes::Bytes::from(_buf.as_slice()))
     }
+
+    pub fn use_debug_mode(&mut self) {
+        self.debug_mode = true;
+    }
 }
 
-pub fn new() -> Runtime {
+pub fn new(_input_file: String) -> Runtime {
     let r: Runtime;
     let cb = |incoming_data: bytes::Bytes| -> Box<bytes::Bytes> {
         let _m = deno::BaseMsg::decode(incoming_data).unwrap();
@@ -101,7 +108,9 @@ pub fn new() -> Runtime {
     };
     let mut _worker = Worker::new(cb);
     r = Runtime{
-        worker: _worker
+        worker: _worker,
+        filename: _input_file,
+        debug_mode: false,
     };
     r
 }
