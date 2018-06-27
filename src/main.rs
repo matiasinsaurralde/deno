@@ -2,7 +2,7 @@ extern crate prost;
 #[macro_use]
 extern crate prost_derive;
 pub mod deno {
-    include!(concat!(env!("OUT_DIR"), "/main.rs"));
+    include!(concat!(env!("OUT_DIR"), "/deno.rs"));
 }
 extern crate bytes;
 mod runtime;
