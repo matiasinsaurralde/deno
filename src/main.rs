@@ -11,6 +11,7 @@ use getopts::Options;
 use std::env;
 mod runtime;
 mod os;
+mod test;
 
 extern crate v8worker2;
 
