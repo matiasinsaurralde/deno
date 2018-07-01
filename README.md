@@ -1,5 +1,7 @@
 # reno
 
+[![Build Status](https://travis-ci.org/matiasinsaurralde/reno.svg?branch=master)](https://travis-ci.org/matiasinsaurralde/reno)
+
 This is a hacky implementation of [deno](https://github.com/ry/deno) in Rust, use at your own risk!
 
 Uses [prost](https://github.com/danburkert/prost) for Protocol Buffers support.
