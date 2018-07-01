@@ -2,31 +2,29 @@
 // All rights reserved. MIT License.
 import { ModuleInfo } from "./types";
 import { pubInternal } from "./dispatch";
-import { deno as pb } from "./msg.pb";
-import { assert } from "./util";
+
+import * as capnp from "capnp-ts";
+import {CapMsg, CapMsg_Channel, CapMsg_Command} from "./msg.capnp";
 
 export function exit(exitCode = 0): void {
-  pubInternal("os", {
-    command: pb.Msg.Command.EXIT,
-    exitCode
-  });
 }
 
 export function codeFetch(
   moduleSpecifier: string,
   containingFile: string
 ): ModuleInfo {
-  const res = pubInternal("os", {
-    command: pb.Msg.Command.CODE_FETCH,
-    codeFetchModuleSpecifier: moduleSpecifier,
-    codeFetchContainingFile: containingFile
-  });
-  assert(res.command === pb.Msg.Command.CODE_FETCH_RES);
+  const message = new capnp.Message();
+  const msg: CapMsg = message.initRoot(CapMsg);
+  msg.setCommand(CapMsg_Command.CODE_FETCH);
+  msg.setCodeFetchModuleSpecifier(moduleSpecifier);
+  msg.setCodeFetchContainingFile(containingFile);
+  msg.setChannel(CapMsg_Channel.OS);
+  const res = pubInternal(message);
   return {
-    moduleName: res.codeFetchResModuleName,
-    filename: res.codeFetchResFilename,
-    sourceCode: res.codeFetchResSourceCode,
-    outputCode: res.codeFetchResOutputCode
+    moduleName: res.getCodeFetchResModuleName(),
+    filename: res.getCodeFetchResFilename(),
+    sourceCode: res.getCodeFetchResSourceCode(),
+    outputCode: res.getCodeFetchResOutputCode()
   };
 }
 
@@ -35,20 +33,17 @@ export function codeCache(
   sourceCode: string,
   outputCode: string
 ): void {
-  pubInternal("os", {
-    command: pb.Msg.Command.CODE_CACHE,
-    codeCacheFilename: filename,
-    codeCacheSourceCode: sourceCode,
-    codeCacheOutputCode: outputCode
-  });
 }
 
 export function readFileSync(filename: string): Uint8Array {
-  const res = pubInternal("os", {
-    command: pb.Msg.Command.READ_FILE_SYNC,
-    readFileSyncFilename: filename
-  });
-  return res.readFileSyncData;
+  const message = new capnp.Message();
+  const msg: CapMsg = message.initRoot(CapMsg);
+  msg.setCommand(CapMsg_Command.READ_FILE_SYNC);
+  msg.setReadFileSyncFilename(filename);
+
+  msg.setChannel(CapMsg_Channel.OS);
+  const res = pubInternal(message);
+  return res.getReadFileSyncData().toUint8Array();
 }
 
 export function writeFileSync(
@@ -56,10 +51,4 @@ export function writeFileSync(
   data: Uint8Array,
   perm: number
 ): void {
-  pubInternal("os", {
-    command: pb.Msg.Command.WRITE_FILE_SYNC,
-    writeFileSyncFilename: filename,
-    writeFileSyncData: data,
-    writeFileSyncPerm: perm
-  });
 }

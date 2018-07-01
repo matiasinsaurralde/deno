@@ -4,6 +4,12 @@ extern crate prost_derive;
 pub mod deno {
     include!(concat!(env!("OUT_DIR"), "/deno.rs"));
 }
+
+extern crate capnp;
+mod msg_capnp {
+    include!(concat!(env!("OUT_DIR"), "/msg_capnp.rs"));
+}
+
 extern crate bytes;
 extern crate getopts;
 

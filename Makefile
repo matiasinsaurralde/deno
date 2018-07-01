@@ -3,7 +3,6 @@ TS_FILES = \
 	deno.d.ts \
 	deno.ts \
 	dispatch.ts \
-	fetch.ts \
 	globals.ts \
 	main.ts \
 	msg.pb.d.ts \
@@ -11,13 +10,13 @@ TS_FILES = \
 	os.ts \
 	runtime.ts \
 	text-encoding.d.ts \
-	timers.ts \
 	tsconfig.json \
 	types.ts \
 	url.js \
 	util.ts \
 	v8_source_maps.ts \
-	v8worker2.d.ts
+	v8worker2.d.ts \
+	msg.capnp.ts
 
 RUST_FILES = \
 	src/main.rs \

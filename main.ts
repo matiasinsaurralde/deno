@@ -4,13 +4,14 @@
 import "babel-polyfill";
 
 import * as dispatch from "./dispatch";
-import { deno as pb } from "./msg.pb";
 
 import * as runtime from "./runtime";
 import * as util from "./util";
 
-import { initTimers } from "./timers";
-import { initFetch } from "./fetch";
+import {CapMsg, CapMsg_Channel} from "./msg.capnp";
+
+// import { initTimers } from "./timers";
+// import { initFetch } from "./fetch";
 
 // To control internal logging output
 // Set with the -debug command-line flag.
@@ -24,30 +25,35 @@ let startCalled = false;
   // tslint:disable-next-line:no-any
   delete (window as any)["denoMain"];
 
-  initTimers();
-  initFetch();
+  // initTimers();
+  // initFetch();
 
-  dispatch.sub("start", (payload: Uint8Array) => {
+  dispatch.sub(CapMsg_Channel.START, (msg: CapMsg) => {
     if (startCalled) {
       throw Error("start message received more than once!");
     }
     startCalled = true;
 
-    const msg = pb.Msg.decode(payload);
+    /*const msg = pb.Msg.decode(payload);
     const {
-      startCwd: cwd,
+      startCwd: msg.getStartCmdCwd(),
       startArgv: argv,
       startDebugFlag: debugFlag,
       startMainJs: mainJs,
       startMainMap: mainMap
-    } = msg;
+    } = msg;*/
 
-    debug = debugFlag;
-    util.log("start", { cwd, argv, debugFlag });
+    const cwd = msg.getStartCmdCwd();
+    const mainJs = msg.getStartCmdMainJs();
+    const mainMap = msg.getStartCmdMainMap();
+    const argv = msg.getStartCmdArgv();
+
+    debug = msg.getStartCmdDebugFlag();
+    util.log("start", { cwd, argv, debug });
 
     runtime.setup(mainJs, mainMap);
 
-    const inputFn = argv[0];
+    const inputFn = argv.get(0);
     const mod = runtime.resolveModule(inputFn, `${cwd}/`);
     mod.compileAndRun();
   });

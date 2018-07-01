@@ -16,9 +16,11 @@ prost = "0.4.0"
 prost-derive = "0.4.0"
 prost-types = "0.4.0"
 getopts = "0.2"
+capnp = "0.8"
 
 [build-dependencies]
 prost-build = "0.4.0"
+capnpc = "0.8"
 
 [profile.dev]
 opt-level = 0

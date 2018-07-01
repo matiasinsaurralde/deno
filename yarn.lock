@@ -902,6 +902,15 @@ caniuse-lite@^1.0.30000835:
   version "1.0.30000839"
   resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30000839.tgz#41fcc036cf1cb77a0e0be041210f77f1ced44a7b"
 
+capnp-ts@0.2.4:
+  version "0.2.4"
+  resolved "https://registry.yarnpkg.com/capnp-ts/-/capnp-ts-0.2.4.tgz#da729493311f384d65d480d9afe979ceab9f41bb"
+  dependencies:
+    debug "^2.6.3"
+    format "^0.2.2"
+    tslib "^1.7.1"
+    utf8-encoding "^0.1.2"
+
 catharsis@~0.8.9:
   version "0.8.9"
   resolved "https://registry.yarnpkg.com/catharsis/-/catharsis-0.8.9.tgz#98cc890ca652dd2ef0e70b37925310ff9e90fc8b"
@@ -1272,7 +1281,7 @@ deasync@^0.1.12:
     bindings "~1.2.1"
     nan "^2.0.7"
 
-debug@2.6.9, debug@^2.1.2, debug@^2.2.0, debug@^2.3.3, debug@^2.6.8, debug@^2.6.9:
+debug@2.6.9, debug@^2.1.2, debug@^2.2.0, debug@^2.3.3, debug@^2.6.3, debug@^2.6.8, debug@^2.6.9:
   version "2.6.9"
   resolved "https://registry.yarnpkg.com/debug/-/debug-2.6.9.tgz#5d128515df134ff327e90a4c93f4e077a536341f"
   dependencies:
@@ -1606,6 +1615,10 @@ for-in@^1.0.2:
 foreach@^2.0.5:
   version "2.0.5"
   resolved "https://registry.yarnpkg.com/foreach/-/foreach-2.0.5.tgz#0bee005018aeb260d0a3af3ae658dd0136ec1b99"
+
+format@^0.2.2:
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/format/-/format-0.2.2.tgz#d6170107e9efdc4ed30c9dc39016df942b5cb58b"
 
 fragment-cache@^0.2.1:
   version "0.2.1"
@@ -2507,6 +2520,10 @@ object.values@^1.0.4:
     es-abstract "^1.6.1"
     function-bind "^1.1.0"
     has "^1.0.1"
+
+obtain-unicode@~0.0.5:
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/obtain-unicode/-/obtain-unicode-0.0.5.tgz#655f337a8f135280495d77a60efc601f9af5d5dc"
 
 on-finished@~2.3.0:
   version "2.3.0"
@@ -3610,6 +3627,10 @@ trim-right@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/trim-right/-/trim-right-1.0.1.tgz#cb2e1203067e0c8de1f614094b9fe45704ea6003"
 
+tslib@^1.7.1:
+  version "1.9.3"
+  resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.9.3.tgz#d7e4dd79245d85428c4d7e4822a79917954ca286"
+
 tslib@^1.8.0, tslib@^1.8.1:
   version "1.9.0"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.9.0.tgz#e37a86fda8cbbaf23a057f473c9f4dc64e5fc2e8"
@@ -3750,6 +3771,12 @@ use@^3.1.0:
   resolved "https://registry.yarnpkg.com/use/-/use-3.1.0.tgz#14716bf03fdfefd03040aef58d8b4b85f3a7c544"
   dependencies:
     kind-of "^6.0.2"
+
+utf8-encoding@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/utf8-encoding/-/utf8-encoding-0.1.2.tgz#8717015cb8b923bc0303bf4af520af96f06ae9a2"
+  dependencies:
+    obtain-unicode "~0.0.5"
 
 util-deprecate@~1.0.1:
   version "1.0.2"
